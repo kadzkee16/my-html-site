@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kadz Music - Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --color-bg-dark: #121212;
+    --color-bg-light: #fafafa;
+    --color-primary: #1db954;
+    --color-primary-hover: #1ed760;
+    --color-text-light: #fff;
+    --color-text-dark: #000;
+    --color-error: #ff4d4d;
+    --color-input-bg-dark: #2a2a2a;
+    --color-input-bg-light: #e0e0e0;
+  }
+
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-light);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.4s, color 0.4s;
+  }
+
+  body[dir="rtl"] {
+    direction: rtl;
+  }
+
+  .login-container {
+    background: linear-gradient(145deg, #222222, #1a1a1a);
+    max-width: 420px;
+    width: 90%;
+    padding: 36px 32px;
+    border-radius: 20px;
+    box-shadow:
+      5px 5px 15px #0a0a0a,
+      -5px -5px 15px #2a2a2a;
+    text-align: center;
+    position: relative;
+  }
+
+  body[dir="rtl"] .login-container {
+    text-align: center;
+  }
+
+  .logo img {
+    width: 130px;
+    margin-bottom: 20px;
+    animation: fadeIn 1s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: scale(0.9);}
+    to {opacity: 1; transform: scale(1);}
+  }
+
+  h2 {
+    margin-bottom: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  input[type="email"],
+  input[type="password"] {
+    padding: 16px 18px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: none;
+    background-color: var(--color-input-bg-dark);
+    color: var(--color-text-light);
+    box-shadow:
+      inset 2px 2px 5px #1c1c1c,
+      inset -2px -2px 5px #383838;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    outline-offset: 3px;
+  }
+
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+    box-shadow:
+      0 0 10px var(--color-primary),
+      inset 2px 2px 5px #1c1c1c,
+      inset -2px -2px 5px #383838;
+    background-color: #222;
+  }
+
+  input::placeholder {
+    color: #999;
+  }
+
+  /* RTL placeholder alignment */
+  body[dir="rtl"] input::placeholder {
+    text-align: right;
+  }
+
+  button {
+    padding: 16px 0;
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    border: none;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 17px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      0 6px 12px rgba(29,185,84,0.6);
+  }
+
+  button:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+    box-shadow:
+      0 8px 20px rgba(30,215,96,0.9);
+  }
+
+  button:disabled {
+    background-color: #444;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  .message {
+    margin: 8px 0 0;
+    min-height: 20px;
+    font-size: 14px;
+    color: var(--color-error);
+    font-weight: 600;
+  }
+
+  .signup-link {
+    margin-top: 18px;
+    font-size: 14px;
+    color: #aaa;
+  }
+
+  .signup-link a {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .signup-link a:hover {
+    text-decoration: underline;
+  }
+
+  .extra-links {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #aaa;
+  }
+
+  .extra-links a {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .extra-links a:hover {
+    text-decoration: underline;
+  }
+
+  /* Loading spinner */
+  .spinner {
+    border: 3px solid rgba(255,255,255,0.3);
+    border-top: 3px solid white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none;
+  }
+
+  button.loading .spinner {
+    display: inline-block;
+  }
+
+  button.loading span.btn-text {
+    visibility: hidden;
+  }
+
+  @keyframes spin {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    100% { transform: translateY(-50%) rotate(360deg); }
+  }
+
+  /* Remember me checkbox */
+  .remember-container {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #ccc;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .remember-container input {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Stylish Language Selector Dropdown */
+  .lang-wrapper {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 2000;
+    font-size: 14px;
+    user-select: none;
+  }
+
+  body[dir="rtl"] .lang-wrapper {
+    left: auto;
+    right: 12px;
+  }
+
+  .lang-btn {
+    background-color: var(--color-input-bg-dark);
+    color: var(--color-text-light);
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: none;
+    min-width: 120px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow:
+      3px 3px 8px #0d0d0d,
+      -3px -3px 8px #2d2d2d;
+    transition: background-color 0.3s;
+  }
+
+  .lang-btn:hover {
+    background-color: #333;
+  }
+
+  .lang-btn .flag {
+    font-size: 18px;
+  }
+
+  .lang-dropdown {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background-color: var(--color-input-bg-dark);
+    border-radius: 12px;
+    box-shadow:
+      4px 4px 12px #0a0a0a,
+      -4px -4px 12px #2a2a2a;
+    margin-top: 8px;
+    display: none;
+    flex-direction: column;
+    min-width: 140px;
+    user-select: none;
+  }
+
+  .lang-dropdown.active {
+    display: flex;
+  }
+
+  .lang-option {
+    padding: 10px 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-text-light);
+    transition: background-color 0.25s;
+  }
+
+  .lang-option:hover {
+    background-color: #2a2a2a;
+  }
+
+  .lang-option .flag {
+    font-size: 18px;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="lang-wrapper" tabindex="0" aria-label="Select language" role="listbox" aria-expanded="false" aria-haspopup="listbox">
+  <button class="lang-btn" id="lang-btn" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="selected-lang">
+    <span class="flag" id="selected-flag">🇺🇸</span>
+    <span id="selected-lang">English</span>
+    <svg style="margin-left:auto;transform-origin:center;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </button>
+  <div class="lang-dropdown" role="list" aria-label="Language options" id="lang-dropdown">
+    <div class="lang-option" role="option" data-lang="en" tabindex="0"><span class="flag">🇺🇸</span> English</div>
+    <div class="lang-option" role="option" data-lang="fr" tabindex="0"><span class="flag">🇫🇷</span> Français</div>
+    <div class="lang-option" role="option" data-lang="ar" tabindex="0"><span class="flag">🇩🇿</span> العربية</div>
+  </div>
+</div>
+
+<div class="login-container" role="main" aria-live="polite">
+  <div class="logo">
+    <img src="kadz-logo.png" alt="Kadz Music Logo" />
+  </div>
+  <h2 id="login-title">Login to Kadz Music</h2>
+  <div id="message" class="message" role="alert" aria-live="assertive"></div>
+  <form id="login-form" onsubmit="return loginUser(event)" novalidate>
+    <input
+      type="email"
+      id="email"
+      aria-label="Email"
+      placeholder="Email"
+      required
+      autocomplete="email"
+      dir="ltr"
+    />
+    <input
+      type="password"
+      id="password"
+      aria-label="Password"
+      placeholder="Password"
+      required
+      autocomplete="current-password"
+      dir="ltr"
+      minlength="6"
+    />
+    <label class="remember-container" for="remember-me">
+      <input type="checkbox" id="remember-me" />
+      <span id="remember-text">Remember Me</span>
+    </label>
+    <button type="submit" id="submit-btn" aria-live="polite" aria-busy="false" aria-label="Log In">
+      <span class="btn-text">Log In</span>
+      <span class="spinner" aria-hidden="true"></span>
+    </button>
+  </form>
+  <div class="extra-links">
+    <a href="forgot.html" id="forgot-password-link">Forgot Password?</a>
+    <a href="signup.html" id="signup-link">Sign up</a>
+  </div>
+</div>
+
+<script>
+  const translations = {
+    en: {
+      loginTitle: "Login to Kadz Music",
+      emailPlaceholder: "Email",
+      passwordPlaceholder: "Password",
+      rememberMe: "Remember Me",
+      loginBtn: "Log In",
+      forgotPassword: "Forgot Password?",
+      signupText: "Sign up",
+      messageFill: "Please fill in all fields.",
+      messageEmailInvalid: "Please enter a valid email.",
+      messagePasswordShort: "Password must be at least 6 characters.",
+      messageIncorrect: "Incorrect email or password.",
+      loadingText: "Logging in...",
+      flag: "🇺🇸",
+      langName: "English"
+    },
+    fr: {
+      loginTitle: "Connectez-vous à Kadz Music",
+      emailPlaceholder: "E-mail",
+      passwordPlaceholder: "Mot de passe",
+      rememberMe: "Se souvenir de moi",
+      loginBtn: "Connexion",
+      forgotPassword: "Mot de passe oublié?",
+      signupText: "Inscription",
+      messageFill: "Veuillez remplir tous les champs.",
+      messageEmailInvalid: "Veuillez entrer un e-mail valide.",
+      messagePasswordShort: "Le mot de passe doit comporter au moins 6 caractères.",
+      messageIncorrect: "E-mail ou mot de passe incorrect.",
+      loadingText: "Connexion en cours...",
+      flag: "🇫🇷",
+      langName: "Français"
+    },
+    ar: {
+      loginTitle: "تسجيل الدخول إلى كادز موسيقى",
+      emailPlaceholder: "البريد الإلكتروني",
+      passwordPlaceholder: "كلمة المرور",
+      rememberMe: "تذكرني",
+      loginBtn: "تسجيل الدخول",
+      forgotPassword: "نسيت كلمة المرور؟",
+      signupText: "إنشاء حساب",
+      messageFill: "يرجى ملء جميع الحقول.",
+      messageEmailInvalid: "يرجى إدخال بريد إلكتروني صالح.",
+      messagePasswordShort: "يجب أن تكون كلمة المرور 6 أحرف على الأقل.",
+      messageIncorrect: "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+      loadingText: "جاري تسجيل الدخول...",
+      flag: "🇩🇿",
+      langName: "العربية"
+    }
+  };
+
+  const langWrapper = document.querySelector('.lang-wrapper');
+  const langBtn = document.getElementById('lang-btn');
+  const langDropdown = document.getElementById('lang-dropdown');
+  const selectedFlag = document.getElementById('selected-flag');
+  const selectedLangText = document.getElementById('selected-lang');
+
+  function updateLanguageUI(lang) {
+    const t = translations[lang];
+    if(lang === "ar") {
+      document.body.setAttribute('dir', 'rtl');
+    } else {
+      document.body.setAttribute('dir', 'ltr');
+    }
+    document.getElementById("login-title").textContent = t.loginTitle;
+    document.getElementById("email").placeholder = t.emailPlaceholder;
+    document.getElementById("password").placeholder = t.passwordPlaceholder;
+    document.getElementById("remember-text").textContent = t.rememberMe;
+    document.querySelector("#submit-btn .btn-text").textContent = t.loginBtn;
+    document.getElementById("forgot-password-link").textContent = t.forgotPassword;
+    document.getElementById("signup-link").textContent = t.signupText;
+    document.getElementById("message").textContent = "";
+
+    selectedFlag.textContent = t.flag;
+    selectedLangText.textContent = t.langName;
+
+    // Update aria attributes
+    langWrapper.setAttribute("aria-activedescendant", "lang-"+lang);
+  }
+
+  // Toggle dropdown
+  langBtn.addEventListener("click", () => {
+    const expanded = langWrapper.getAttribute("aria-expanded") === "true";
+    langWrapper.setAttribute("aria-expanded", String(!expanded));
+    langDropdown.classList.toggle("active");
+  });
+
+  // Close dropdown if click outside
+  document.addEventListener("click", (e) => {
+    if (!langWrapper.contains(e.target)) {
+      langDropdown.classList.remove("active");
+      langWrapper.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // Select language on click
+  langDropdown.querySelectorAll(".lang-option").forEach(option => {
+    option.addEventListener("click", () => {
+      const selectedLang = option.getAttribute("data-lang");
+      updateLanguageUI(selectedLang);
+      langDropdown.classList.remove("active");
+      langWrapper.setAttribute("aria-expanded", "false");
+    });
+
+    option.addEventListener("keydown", e => {
+      if(e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        option.click();
+      }
+    });
+  });
+
+  // Initialize default language
+  updateLanguageUI('en');
+
+  // Login form logic
+  const loginForm = document.getElementById("login-form");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const messageDiv = document.getElementById("message");
+  const submitBtn = document.getElementById("submit-btn");
+  const rememberMeCheckbox = document.getElementById("remember-me");
+
+  function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  function setLoading(loading) {
+    if (loading) {
+      submitBtn.disabled = true;
+      submitBtn.classList.add("loading");
+      submitBtn.setAttribute("aria-busy", "true");
+    } else {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove("loading");
+      submitBtn.setAttribute("aria-busy", "false");
+    }
+  }
+
+  function loginUser(event) {
+    event.preventDefault();
+    messageDiv.textContent = "";
+    const lang = selectedLangText.textContent === "English" ? "en" : (selectedLangText.textContent === "Français" ? "fr" : "ar");
+    const t = translations[lang];
+
+    const email = emailInput.value.trim().toLowerCase();
+    const password = passwordInput.value.trim();
+
+    if (!email || !password) {
+      messageDiv.textContent = t.messageFill;
+      return false;
+    }
+    if (!validateEmail(email)) {
+      messageDiv.textContent = t.messageEmailInvalid;
+      return false;
+    }
+    if (password.length < 6) {
+      messageDiv.textContent = t.messagePasswordShort;
+      return false;
+    }
+
+    setLoading(true);
+
+    setTimeout(() => {
+      const users = JSON.parse(localStorage.getItem("spotify_users")) || [];
+      const matchedUser = users.find(user => user.email === email && user.password === password);
+
+      if (matchedUser) {
+        if (rememberMeCheckbox.checked) {
+          localStorage.setItem("spotify_logged_in_user", JSON.stringify(matchedUser));
+        } else {
+          sessionStorage.setItem("justLoggedIn", "true");
+        }
+        window.location.href = "index.html";
+      } else {
+        messageDiv.textContent = t.messageIncorrect;
+        setLoading(false);
+      }
+    }, 500);
+
+    return false;
+  }
+
+  emailInput.addEventListener("input", () => {
+    messageDiv.textContent = "";
+  });
+  passwordInput.addEventListener("input", () => {
+    messageDiv.textContent = "";
+  });
+
+  loginForm.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      loginUser(e);
+    }
+  });
+</script>
+</body>
+</html>

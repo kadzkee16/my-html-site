@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Forgot Password - Kadz Music</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      color: #fff;
+      font-family: 'Roboto', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .forgot-container {
+      background: linear-gradient(145deg, #222, #1a1a1a);
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow:
+        5px 5px 15px #0a0a0a,
+        -5px -5px 15px #2a2a2a;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    input[type="email"] {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      font-size: 15px;
+      background-color: #2a2a2a;
+      color: #fff;
+      margin-bottom: 20px;
+      box-shadow:
+        inset 2px 2px 5px #1c1c1c,
+        inset -2px -2px 5px #383838;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 30px;
+      border: none;
+      background-color: #1db954;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #1ed760;
+    }
+
+    .message {
+      margin-top: 16px;
+      font-size: 14px;
+      min-height: 20px;
+      font-weight: 600;
+    }
+
+    a {
+      display: block;
+      margin-top: 20px;
+      color: #1db954;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="forgot-container">
+    <h2>Forgot Password</h2>
+    <input type="email" id="email" placeholder="Enter your email" required />
+    <button onclick="recoverPassword()">Recover Password</button>
+    <div id="message" class="message"></div>
+    <a href="login.html">← Back to Login</a>
+  </div>
+
+  <script>
+    function recoverPassword() {
+      const email = document.getElementById("email").value.trim().toLowerCase();
+      const message = document.getElementById("message");
+
+      if (!email) {
+        message.style.color = "orange";
+        message.textContent = "Please enter your email.";
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem("spotify_users")) || [];
+      const user = users.find(u => u.email === email);
+
+      if (user) {
+        message.style.color = "#1db954";
+        message.textContent = "Your password is: " + user.password;
+      } else {
+        message.style.color = "#ff4d4d";
+        message.textContent = "No account found with this email.";
+      }
+    }
+  </script>
+</body>
+</html>

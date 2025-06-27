@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kadz Music Mobile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #fff;
+    }
+    .header {
+      padding: 10px 15px;
+      background-color: #1db954;
+      color: #fff;
+      text-align: center;
+      font-weight: bold;
+    }
+    #search-bar {
+      width: 90%;
+      margin: 10px auto;
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      display: block;
+    }
+    .playlist {
+      padding: 10px;
+    }
+    .playlist li {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      background-color: #181818;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .playlist img {
+      width: 50px;
+      height: 50px;
+      border-radius: 5px;
+    }
+    .playlist div {
+      display: flex;
+      flex-direction: column;
+    }
+    .player {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #181818;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+    }
+    .controls {
+      font-size: 24px;
+      display: flex;
+      gap: 30px;
+      margin-top: 10px;
+    }
+    .controls i {
+      cursor: pointer;
+    }
+    #progress {
+      width: 100%;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">🎵 Kadz Music</div>
+  <input type="text" id="search-bar" placeholder="Search..." oninput="searchSongs()" />
+  <ul class="playlist" id="playlist-ul"></ul>
+
+  <div class="player">
+    <div><strong id="title">Title</strong> - <span id="artist">Artist</span></div>
+    <input type="range" id="progress" value="0" min="0" max="100" />
+    <div class="controls">
+      <i class="fa-solid fa-backward-step" onclick="prevTrack()"></i>
+      <i class="fa-solid fa-play-circle" id="play-btn" onclick="togglePlay()"></i>
+      <i class="fa-solid fa-forward-step" onclick="nextTrack()"></i>
+    </div>
+  </div>
+
+  <script>
+    const tracks = [
+      { title: "AJE", artist: "Trinix", src: "trinix-aje-feat-tayc-khaid.mp3", cover: "trinix-aje-feat-tayc-khaid.jpg" },
+      { title: "Stars", artist: "PinkPantheress", src: "PinkPantheress - Stars.mp3", cover: "PinkPantheress - Stars.jpg" },
+      { title: "No Limit", artist: "Gazo", src: "No Limit-Gazo- Vacra-LDC.mp3", cover: "No Limit-gazo-Vacra-ldc.jpg" },
+      { title: "Tonight", artist: "PinkPantheress", src: "tonight-pinkpantheress.mp3", cover: "tonight-pinkpantheress copie.JPG" },
+      { title: "La Gari", artist: "L'Algerino", src: "LAlgérino-feat Franglish-&-Alonzo - La Gari.mp3", cover: "LAlgérino-feat Franglish-&-Alonzo - La Gari.jpg" }
+    ];
+    let currentTrack = 0;
+    const audio = new Audio();
+    const title = document.getElementById('title');
+    const artist = document.getElementById('artist');
+    const progress = document.getElementById('progress');
+    const playBtn = document.getElementById('play-btn');
+
+    function loadTrack(index) {
+      const track = tracks[index];
+      audio.src = track.src;
+      title.textContent = track.title;
+      artist.textContent = track.artist;
+      audio.play();
+      playBtn.classList.replace("fa-play-circle", "fa-pause-circle");
+    }
+
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play();
+        playBtn.classList.replace("fa-play-circle", "fa-pause-circle");
+      } else {
+        audio.pause();
+        playBtn.classList.replace("fa-pause-circle", "fa-play-circle");
+      }
+    }
+
+    function nextTrack() {
+      currentTrack = (currentTrack + 1) % tracks.length;
+      loadTrack(currentTrack);
+    }
+
+    function prevTrack() {
+      currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+      loadTrack(currentTrack);
+    }
+
+    function searchSongs() {
+      const input = document.getElementById("search-bar").value.toLowerCase();
+      const filtered = tracks.filter(t => t.title.toLowerCase().includes(input) || t.artist.toLowerCase().includes(input));
+      renderPlaylist(filtered);
+    }
+
+    function renderPlaylist(list) {
+      const playlistUL = document.getElementById('playlist-ul');
+      playlistUL.innerHTML = '';
+      list.forEach((track, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `<img src="${track.cover}" /><div><strong>${track.title}</strong><span>${track.artist}</span></div>`;
+        li.addEventListener('click', () => {
+          currentTrack = index;
+          loadTrack(currentTrack);
+        });
+        playlistUL.appendChild(li);
+      });
+    }
+
+    audio.addEventListener("timeupdate", () => {
+      if (!isNaN(audio.duration)) {
+        const percent = (audio.currentTime / audio.duration) * 100;
+        progress.value = percent;
+      }
+    });
+
+    progress.addEventListener("input", () => {
+      if (!isNaN(audio.duration)) {
+        audio.currentTime = (progress.value / 100) * audio.duration;
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderPlaylist(tracks);
+      loadTrack(currentTrack);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #121212;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+}
+header {
+  background-color: #1db954;
+  padding: 20px;
+  text-align: center;
+}
+header img {
+  width: 160px;
+  margin-bottom: 10px;
+}
+header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+main {
+  padding: 30px;
+}
+.song-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+}
+.song-card {
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+.song-card:hover {
+  transform: scale(1.05);
+}
+.song-card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.song-card h3 {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #fff;
+}
+.song-card p {
+  margin: 0;
+  font-size: 13px;
+  color: #aaa;
+}
+footer {
+  background-color: #1a1a1a;
+  padding: 20px;
+  text-align: center;
+}
+.player-controls button {
+  margin: 0 10px;
+  padding: 12px 20px;
+  background-color: #1db954;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.player-controls button:hover {
+  background-color: #1ed760;
+}

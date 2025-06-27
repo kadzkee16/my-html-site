@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up - Kadz Music</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1db954;
+      --bg: #121212;
+      --card: #1e1e1e;
+      --text: white;
+      --input-bg: #2a2a2a;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(29,185,84,0.15), transparent 60%);
+      transition: background 0.2s;
+      z-index: 0;
+    }
+
+    .signup-container {
+      background-color: var(--card);
+      padding: 30px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+      animation: fadeIn 0.5s ease-out;
+      position: relative;
+      z-index: 2;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .logo {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      border: 2px solid var(--primary);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: spin 6s linear infinite;
+    }
+
+    .logo img {
+      width: 60%;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 6px;
+      background-color: var(--input-bg);
+      color: var(--text);
+      font-size: 14px;
+      transition: box-shadow 0.3s, transform 0.2s;
+    }
+
+    input:focus, button:hover {
+      box-shadow: 0 0 10px var(--primary);
+      transform: scale(1.02);
+    }
+
+    button {
+      background-color: var(--primary);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1ed760;
+    }
+
+    p {
+      font-size: 14px;
+      margin-top: 12px;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .lang-dropdown {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
+
+    .lang-btn {
+      background: var(--card);
+      border: 2px solid var(--primary);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 16px;
+      color: var(--text);
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .lang-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 12px var(--primary);
+    }
+
+    .lang-menu {
+      position: absolute;
+      top: 52px;
+      right: 0;
+      background: var(--card);
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.4s ease;
+      min-width: 120px;
+      z-index: 10;
+    }
+
+    .lang-menu.open {
+      max-height: 200px;
+    }
+
+    .lang-menu button {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 10px;
+      text-align: left;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .lang-menu button:hover {
+      background-color: var(--input-bg);
+    }
+  </style>
+</head>
+<body onmousemove="updateLight(event)">
+  <div class="signup-container">
+    <div class="lang-dropdown">
+      <button class="lang-btn" onclick="toggleLangMenu()">🌐</button>
+      <div id="langMenu" class="lang-menu">
+        <button onclick="setLang('en')">English</button>
+        <button onclick="setLang('fr')">Français</button>
+        <button onclick="setLang('ar')">العربية</button>
+      </div>
+    </div>
+    <div class="logo">
+      <img src="kadz-logo.png" alt="Kadz Music Logo">
+    </div>
+    <h2 id="signupTitle">Create Your Account</h2>
+    <form onsubmit="return signupUser(event)">
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button type="submit" id="submitBtn">Sign Up</button>
+    </form>
+    <p id="loginLink">Already have an account? <a href="login.html">Log in</a></p>
+  </div>
+
+  <script>
+    function toggleLangMenu() {
+      const menu = document.getElementById("langMenu");
+      menu.classList.toggle("open");
+    }
+
+    function setLang(lang) {
+      document.getElementById("langMenu").classList.remove("open");
+      changeLang(lang);
+    }
+
+    function changeLang(lang) {
+      if (lang === "fr") {
+        document.getElementById("signupTitle").innerText = "Créer un compte";
+        document.getElementById("email").placeholder = "E-mail";
+        document.getElementById("password").placeholder = "Mot de passe";
+        document.getElementById("submitBtn").innerText = "S'inscrire";
+        document.getElementById("loginLink").innerHTML = "Vous avez déjà un compte ? <a href='login.html'>Se connecter</a>";
+      } else if (lang === "ar") {
+        document.getElementById("signupTitle").innerText = "إنشاء حساب";
+        document.getElementById("email").placeholder = "البريد الإلكتروني";
+        document.getElementById("password").placeholder = "كلمة المرور";
+        document.getElementById("submitBtn").innerText = "تسجيل";
+        document.getElementById("loginLink").innerHTML = "لديك حساب؟ <a href='login.html'>تسجيل الدخول</a>";
+      } else {
+        document.getElementById("signupTitle").innerText = "Create Your Account";
+        document.getElementById("email").placeholder = "Email";
+        document.getElementById("password").placeholder = "Password";
+        document.getElementById("submitBtn").innerText = "Sign Up";
+        document.getElementById("loginLink").innerHTML = "Already have an account? <a href='login.html'>Log in</a>";
+      }
+    }
+
+    function signupUser(event) {
+      event.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!email || !password) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem("spotify_users")) || [];
+      const existingUser = users.find(user => user.email === email);
+
+      if (existingUser) {
+        alert("Email already registered. Please log in.");
+        return;
+      }
+
+      users.push({ email, password });
+      localStorage.setItem("spotify_users", JSON.stringify(users));
+      alert("Account created! You can now log in.");
+      window.location.href = "login.html";
+    }
+
+    function updateLight(e) {
+      document.documentElement.style.setProperty('--x', e.clientX + 'px');
+      document.documentElement.style.setProperty('--y', e.clientY + 'px');
+    }
+  </script>
+</body>
+</html>

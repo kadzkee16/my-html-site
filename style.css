@@ -1,0 +1,151 @@
+body {
+  font-family: sans-serif;
+  background-color: #121212;
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 220px;
+  background-color: #000;
+  padding: 20px;
+}
+
+.sidebar .logo {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 15px 0;
+  cursor: pointer;
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px;
+  text-align: center;
+  padding-bottom: 140px;
+}
+
+.album-card img {
+  width: 200px;
+  border-radius: 10px;
+}.playlist {
+  margin-top: 40px;
+  text-align: left;
+  width: 100%;
+  max-width: 500px;
+}
+
+.playlist h2 {
+  margin-bottom: 10px;
+}
+
+.playlist ul {
+  list-style: none;
+  padding: 0;
+}
+
+.playlist li {
+  padding: 10px;
+  border-bottom: 1px solid #333;
+  cursor: pointer;
+}
+
+.playlist li:hover {
+  background-color: #1a1a1a;
+}
+
+
+.player {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #181818;
+  padding: 10px 20px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+}
+
+.track-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.track-info img {
+  width: 60px;
+  height: 60px;
+  border-radius: 5px;
+}
+
+.player-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+#play-btn {
+  font-size: 35px;
+  cursor: pointer;
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#progress {
+  width: 300px;
+  height: 5px;
+  accent-color: #1db954;
+}
+
+.volume {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.playlist li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.playlist li img {
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+.playlist li.playing {
+  background-color: #282828;
+  border-left: 4px solid #1db954;
+}
